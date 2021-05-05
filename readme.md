@@ -61,7 +61,6 @@ Generate an API token using the instructions on this page: https://support.atlas
 
 The account associated with the token must have admin privilidges to your Jira workspace. This is required because the Atlassian API requires these privilidges in order to read workflow configurations from the API. Jival DOES NOT make any configuration updates using the API, it is only used for read calls.
 
-//
 
 ```
 import {PerformWorkflowChecks} from @sanofi-iadc/jival;
@@ -76,7 +75,7 @@ console.log(result.toString());
 ```
 
 Alternatively import the file without using require:
-* tsconfig.json *
+**tsconfig.json**
 ```
 "resolveJsonModule": true
 ```
