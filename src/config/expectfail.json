@@ -1,0 +1,64 @@
+{
+    "expectedWorkflowName": "My workflow",
+    "expectedTransitions": [
+      {
+        "name": "Create",
+        "from": [],
+        "to": "Draft",
+        "type": "initial",
+        "rules": {
+          "conditions": [],
+          "validators": [
+            {
+              "type": "PermissionValidator",
+              "configuration": {
+                "permissionKey": "XXX"
+              }
+            }
+          ],
+          "postFunctions": [
+            {
+              "type": "IssueCreateFunction"
+            },
+            {
+              "type": "IssueReindexFunction"
+            },
+            {
+              "type": "FireIssueEventFunction",
+              "configuration": {
+                "event": {
+                  "id": "1",
+                  "name": "issue_created"
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Smudge",
+        "from": [],
+        "to": "Abandoned",
+        "type": "initial"
+      }
+    ],
+    "expectedStatuses": [
+      {
+        "name": "Build",
+        "transitionTo": ["In Progress"],
+        "transitionFrom": ["Code Review"],
+        "properties": {
+          "issueEditable": true
+        }
+      },
+      {
+        "name": "Dev In Progress",
+        "transitionTo": ["To do" ,"Testing"],
+        "transitionFrom": ["To do" ,"Blocked" , "Testing"],
+        "properties": {
+          "issueEditable": true
+        }
+      }
+
+    ]
+  }

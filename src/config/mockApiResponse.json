@@ -1,0 +1,1216 @@
+{
+    "maxResults": 50,
+    "startAt": 0,
+    "total": 1,
+    "isLast": true,
+    "values": [
+      {
+        "id": {
+          "name": "My lovely workflow",
+          "entityId": "22f056f0-10fd-579d-3fe2-e63f457c0bf9"
+        },
+        "description": "",
+        "transitions": [
+          {
+            "id": "1",
+            "name": "Create",
+            "description": "",
+            "from": [],
+            "to": "10047",
+            "type": "initial",
+            "rules": {
+              "conditions": [],
+              "validators": [
+                {
+                  "type": "PermissionValidator",
+                  "configuration": {
+                    "permissionKey": "CREATE_ISSUES"
+                  }
+                }
+              ],
+              "postFunctions": [
+                {
+                  "type": "IssueCreateFunction"
+                },
+                {
+                  "type": "IssueReindexFunction"
+                },
+                {
+                  "type": "FireIssueEventFunction",
+                  "configuration": {
+                    "event": {
+                      "id": "1",
+                      "name": "issue_created"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "171",
+            "name": "Abandoned",
+            "description": "",
+            "from": [],
+            "to": "10012",
+            "type": "global",
+            "screen": {
+              "id": "10048"
+            },
+            "rules": {
+              "conditions": [
+                {
+                  "type": "ValueFieldCondition",
+                  "configuration": {
+                    "fieldId": "status",
+                    "fieldValue": "Closed",
+                    "comparisonType": "STRING",
+                    "comparator": "!="
+                  }
+                },
+                {
+                  "type": "ValueFieldCondition",
+                  "configuration": {
+                    "fieldId": "status",
+                    "fieldValue": "Abandoned",
+                    "comparisonType": "STRING",
+                    "comparator": "!="
+                  }
+                },
+                {
+                  "type": "SubTaskBlockingCondition",
+                  "configuration": {
+                    "statuses": [
+                      {
+                        "id": "6",
+                        "name": "Closed"
+                      },
+                      {
+                        "id": "10012",
+                        "name": "Abandoned"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "conditionsTree": {
+                "nodeType": "compound",
+                "operator": "OR",
+                "conditions": [
+                  {
+                    "nodeType": "simple",
+                    "type": "ValueFieldCondition",
+                    "configuration": {
+                      "fieldId": "status",
+                      "fieldValue": "Closed",
+                      "comparisonType": "STRING",
+                      "comparator": "!="
+                    }
+                  },
+                  {
+                    "nodeType": "simple",
+                    "type": "ValueFieldCondition",
+                    "configuration": {
+                      "fieldId": "status",
+                      "fieldValue": "Abandoned",
+                      "comparisonType": "STRING",
+                      "comparator": "!="
+                    }
+                  },
+                  {
+                    "nodeType": "simple",
+                    "type": "SubTaskBlockingCondition",
+                    "configuration": {
+                      "statuses": [
+                        {
+                          "id": "6",
+                          "name": "Closed"
+                        },
+                        {
+                          "id": "10012",
+                          "name": "Abandoned"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "validators": [
+                {
+                  "type": "FieldRequiredValidator",
+                  "configuration": {
+                    "ignoreContext": false,
+                    "errorMessage": "Please select the abandon reason",
+                    "fields": [
+                      "customfield_10043"
+                    ]
+                  }
+                }
+              ],
+              "postFunctions": [
+                {
+                  "type": "UpdateIssueFieldFunction",
+                  "configuration": {
+                    "fieldId": "resolution",
+                    "fieldValue": "10004"
+                  }
+                },
+                {
+                  "type": "UpdateIssueStatusFunction"
+                },
+                {
+                  "type": "CreateCommentFunction"
+                },
+                {
+                  "type": "GenerateChangeHistoryFunction"
+                },
+                {
+                  "type": "IssueReindexFunction"
+                },
+                {
+                  "type": "FireIssueEventFunction",
+                  "configuration": {
+                    "event": {
+                      "id": "13",
+                      "name": "issue_generic"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "101",
+            "name": "Acceptance Tests",
+            "description": "",
+            "from": [
+              "10052"
+            ],
+            "to": "10055",
+            "type": "directed",
+            "rules": {
+              "conditions": [],
+              "validators": [],
+              "postFunctions": [
+                {
+                  "type": "UpdateIssueStatusFunction"
+                },
+                {
+                  "type": "CreateCommentFunction"
+                },
+                {
+                  "type": "GenerateChangeHistoryFunction"
+                },
+                {
+                  "type": "IssueReindexFunction"
+                },
+                {
+                  "type": "FireIssueEventFunction",
+                  "configuration": {
+                    "event": {
+                      "id": "13",
+                      "name": "issue_generic"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "11",
+            "name": "Analyse",
+            "description": "",
+            "from": [
+              "10047"
+            ],
+            "to": "10048",
+            "type": "directed",
+            "rules": {
+              "conditions": [],
+              "validators": [],
+              "postFunctions": [
+                {
+                  "type": "UpdateIssueStatusFunction"
+                },
+                {
+                  "type": "CreateCommentFunction"
+                },
+                {
+                  "type": "GenerateChangeHistoryFunction"
+                },
+                {
+                  "type": "IssueReindexFunction"
+                },
+                {
+                  "type": "FireIssueEventFunction",
+                  "configuration": {
+                    "event": {
+                      "id": "13",
+                      "name": "issue_generic"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "111",
+            "name": "Ready For Production",
+            "description": "",
+            "from": [
+              "10055"
+            ],
+            "to": "10054",
+            "type": "directed",
+            "rules": {
+              "conditions": [],
+              "validators": [],
+              "postFunctions": [
+                {
+                  "type": "UpdateIssueStatusFunction"
+                },
+                {
+                  "type": "CreateCommentFunction"
+                },
+                {
+                  "type": "GenerateChangeHistoryFunction"
+                },
+                {
+                  "type": "IssueReindexFunction"
+                },
+                {
+                  "type": "FireIssueEventFunction",
+                  "configuration": {
+                    "event": {
+                      "id": "13",
+                      "name": "issue_generic"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "121",
+            "name": "Move To PROD",
+            "description": "",
+            "from": [
+              "10054"
+            ],
+            "to": "6",
+            "type": "directed",
+            "screen": {
+              "id": "10062"
+            },
+            "rules": {
+              "conditions": [
+                {
+                  "type": "SubTaskBlockingCondition",
+                  "configuration": {
+                    "statuses": [
+                      {
+                        "id": "6",
+                        "name": "Closed"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "conditionsTree": {
+                "nodeType": "simple",
+                "type": "SubTaskBlockingCondition",
+                "configuration": {
+                  "statuses": [
+                    {
+                      "id": "6",
+                      "name": "Closed"
+                    }
+                  ]
+                }
+              },
+              "validators": [],
+              "postFunctions": [
+                {
+                  "type": "UpdateIssueStatusFunction"
+                },
+                {
+                  "type": "CreateCommentFunction"
+                },
+                {
+                  "type": "GenerateChangeHistoryFunction"
+                },
+                {
+                  "type": "IssueReindexFunction"
+                },
+                {
+                  "type": "FireIssueEventFunction",
+                  "configuration": {
+                    "event": {
+                      "id": "5",
+                      "name": "issue_closed"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "141",
+            "name": "PO Validation",
+            "description": "",
+            "from": [
+              "10053"
+            ],
+            "to": "10052",
+            "type": "directed",
+            "rules": {
+              "conditions": [],
+              "validators": [],
+              "postFunctions": [
+                {
+                  "type": "UpdateIssueStatusFunction"
+                },
+                {
+                  "type": "CreateCommentFunction"
+                },
+                {
+                  "type": "GenerateChangeHistoryFunction"
+                },
+                {
+                  "type": "IssueReindexFunction"
+                },
+                {
+                  "type": "FireIssueEventFunction",
+                  "configuration": {
+                    "event": {
+                      "id": "13",
+                      "name": "issue_generic"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "151",
+            "name": "Reopen",
+            "description": "",
+            "from": [
+              "6"
+            ],
+            "to": "10048",
+            "type": "directed",
+            "screen": {
+              "id": "10063"
+            },
+            "rules": {
+              "conditions": [],
+              "validators": [],
+              "postFunctions": [
+                {
+                  "type": "ClearFieldValuePostFunction",
+                  "configuration": {
+                    "fieldId": "resolution"
+                  }
+                },
+                {
+                  "type": "ClearFieldValuePostFunction",
+                  "configuration": {
+                    "fieldId": "customfield_10043"
+                  }
+                },
+                {
+                  "type": "UpdateIssueStatusFunction"
+                },
+                {
+                  "type": "CreateCommentFunction"
+                },
+                {
+                  "type": "GenerateChangeHistoryFunction"
+                },
+                {
+                  "type": "IssueReindexFunction"
+                },
+                {
+                  "type": "FireIssueEventFunction",
+                  "configuration": {
+                    "event": {
+                      "id": "13",
+                      "name": "issue_generic"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "161",
+            "name": "Reopen",
+            "description": "",
+            "from": [
+              "10053"
+            ],
+            "to": "10002",
+            "type": "directed",
+            "screen": {
+              "id": "10063"
+            },
+            "rules": {
+              "conditions": [],
+              "validators": [],
+              "postFunctions": [
+                {
+                  "type": "ClearFieldValuePostFunction",
+                  "configuration": {
+                    "fieldId": "resolution"
+                  }
+                },
+                {
+                  "type": "UpdateIssueStatusFunction"
+                },
+                {
+                  "type": "CreateCommentFunction"
+                },
+                {
+                  "type": "GenerateChangeHistoryFunction"
+                },
+                {
+                  "type": "IssueReindexFunction"
+                },
+                {
+                  "type": "FireIssueEventFunction",
+                  "configuration": {
+                    "event": {
+                      "id": "13",
+                      "name": "issue_generic"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "181",
+            "name": "Reopen",
+            "description": "",
+            "from": [
+              "10012"
+            ],
+            "to": "10048",
+            "type": "directed",
+            "screen": {
+              "id": "10063"
+            },
+            "rules": {
+              "conditions": [],
+              "validators": [],
+              "postFunctions": [
+                {
+                  "type": "UpdateIssueStatusFunction"
+                },
+                {
+                  "type": "CreateCommentFunction"
+                },
+                {
+                  "type": "GenerateChangeHistoryFunction"
+                },
+                {
+                  "type": "IssueReindexFunction"
+                },
+                {
+                  "type": "FireIssueEventFunction",
+                  "configuration": {
+                    "event": {
+                      "id": "13",
+                      "name": "issue_generic"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "191",
+            "name": "Blocked",
+            "description": "",
+            "from": [
+              "10051"
+            ],
+            "to": "10007",
+            "type": "directed",
+            "rules": {
+              "conditions": [],
+              "validators": [],
+              "postFunctions": [
+                {
+                  "type": "UpdateIssueStatusFunction"
+                },
+                {
+                  "type": "CreateCommentFunction"
+                },
+                {
+                  "type": "GenerateChangeHistoryFunction"
+                },
+                {
+                  "type": "IssueReindexFunction"
+                },
+                {
+                  "type": "FireIssueEventFunction",
+                  "configuration": {
+                    "event": {
+                      "id": "13",
+                      "name": "issue_generic"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "201",
+            "name": "Dev In Progress",
+            "description": "",
+            "from": [
+              "10007"
+            ],
+            "to": "10051",
+            "type": "directed",
+            "rules": {
+              "conditions": [],
+              "validators": [],
+              "postFunctions": [
+                {
+                  "type": "UpdateIssueStatusFunction"
+                },
+                {
+                  "type": "CreateCommentFunction"
+                },
+                {
+                  "type": "GenerateChangeHistoryFunction"
+                },
+                {
+                  "type": "IssueReindexFunction"
+                },
+                {
+                  "type": "FireIssueEventFunction",
+                  "configuration": {
+                    "event": {
+                      "id": "13",
+                      "name": "issue_generic"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "21",
+            "name": "To Refine",
+            "description": "",
+            "from": [
+              "10048"
+            ],
+            "to": "10049",
+            "type": "directed",
+            "rules": {
+              "conditions": [],
+              "validators": [],
+              "postFunctions": [
+                {
+                  "type": "UpdateIssueStatusFunction"
+                },
+                {
+                  "type": "CreateCommentFunction"
+                },
+                {
+                  "type": "GenerateChangeHistoryFunction"
+                },
+                {
+                  "type": "IssueReindexFunction"
+                },
+                {
+                  "type": "FireIssueEventFunction",
+                  "configuration": {
+                    "event": {
+                      "id": "13",
+                      "name": "issue_generic"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "211",
+            "name": "Back",
+            "description": "",
+            "from": [
+              "10048"
+            ],
+            "to": "10047",
+            "type": "directed",
+            "rules": {
+              "conditions": [],
+              "validators": [],
+              "postFunctions": [
+                {
+                  "type": "UpdateIssueStatusFunction"
+                },
+                {
+                  "type": "CreateCommentFunction"
+                },
+                {
+                  "type": "GenerateChangeHistoryFunction"
+                },
+                {
+                  "type": "IssueReindexFunction"
+                },
+                {
+                  "type": "FireIssueEventFunction",
+                  "configuration": {
+                    "event": {
+                      "id": "13",
+                      "name": "issue_generic"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "221",
+            "name": "Back",
+            "description": "",
+            "from": [
+              "10049"
+            ],
+            "to": "10048",
+            "type": "directed",
+            "rules": {
+              "conditions": [],
+              "validators": [],
+              "postFunctions": [
+                {
+                  "type": "UpdateIssueStatusFunction"
+                },
+                {
+                  "type": "CreateCommentFunction"
+                },
+                {
+                  "type": "GenerateChangeHistoryFunction"
+                },
+                {
+                  "type": "IssueReindexFunction"
+                },
+                {
+                  "type": "FireIssueEventFunction",
+                  "configuration": {
+                    "event": {
+                      "id": "13",
+                      "name": "issue_generic"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "231",
+            "name": "Back",
+            "description": "",
+            "from": [
+              "10002"
+            ],
+            "to": "10049",
+            "type": "directed",
+            "rules": {
+              "conditions": [],
+              "validators": [],
+              "postFunctions": [
+                {
+                  "type": "UpdateIssueStatusFunction"
+                },
+                {
+                  "type": "CreateCommentFunction"
+                },
+                {
+                  "type": "GenerateChangeHistoryFunction"
+                },
+                {
+                  "type": "IssueReindexFunction"
+                },
+                {
+                  "type": "FireIssueEventFunction",
+                  "configuration": {
+                    "event": {
+                      "id": "13",
+                      "name": "issue_generic"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "241",
+            "name": "Back",
+            "description": "",
+            "from": [
+              "10051"
+            ],
+            "to": "10002",
+            "type": "directed",
+            "rules": {
+              "conditions": [],
+              "validators": [],
+              "postFunctions": [
+                {
+                  "type": "UpdateIssueStatusFunction"
+                },
+                {
+                  "type": "CreateCommentFunction"
+                },
+                {
+                  "type": "GenerateChangeHistoryFunction"
+                },
+                {
+                  "type": "IssueReindexFunction"
+                },
+                {
+                  "type": "FireIssueEventFunction",
+                  "configuration": {
+                    "event": {
+                      "id": "13",
+                      "name": "issue_generic"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "251",
+            "name": "Back",
+            "description": "",
+            "from": [
+              "10032"
+            ],
+            "to": "10051",
+            "type": "directed",
+            "rules": {
+              "conditions": [],
+              "validators": [],
+              "postFunctions": [
+                {
+                  "type": "UpdateIssueStatusFunction"
+                },
+                {
+                  "type": "CreateCommentFunction"
+                },
+                {
+                  "type": "GenerateChangeHistoryFunction"
+                },
+                {
+                  "type": "IssueReindexFunction"
+                },
+                {
+                  "type": "FireIssueEventFunction",
+                  "configuration": {
+                    "event": {
+                      "id": "13",
+                      "name": "issue_generic"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "261",
+            "name": "Back",
+            "description": "",
+            "from": [
+              "10057"
+            ],
+            "to": "10032",
+            "type": "directed",
+            "rules": {
+              "conditions": [],
+              "validators": [],
+              "postFunctions": [
+                {
+                  "type": "UpdateIssueStatusFunction"
+                },
+                {
+                  "type": "CreateCommentFunction"
+                },
+                {
+                  "type": "GenerateChangeHistoryFunction"
+                },
+                {
+                  "type": "IssueReindexFunction"
+                },
+                {
+                  "type": "FireIssueEventFunction",
+                  "configuration": {
+                    "event": {
+                      "id": "13",
+                      "name": "issue_generic"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "41",
+            "name": "Ready to Dev",
+            "description": "",
+            "from": [
+              "10049"
+            ],
+            "to": "10002",
+            "type": "directed",
+            "screen": {
+              "id": "10064"
+            },
+            "rules": {
+              "conditions": [],
+              "validators": [
+                {
+                  "type": "FieldRequiredValidator",
+                  "configuration": {
+                    "ignoreContext": false,
+                    "errorMessage": "Please respect the definitions of ready",
+                    "fields": [
+                      "customfield_10042",
+                      "customfield_10026"
+                    ]
+                  }
+                }
+              ],
+              "postFunctions": [
+                {
+                  "type": "UpdateIssueStatusFunction"
+                },
+                {
+                  "type": "CreateCommentFunction"
+                },
+                {
+                  "type": "GenerateChangeHistoryFunction"
+                },
+                {
+                  "type": "IssueReindexFunction"
+                },
+                {
+                  "type": "FireIssueEventFunction",
+                  "configuration": {
+                    "event": {
+                      "id": "13",
+                      "name": "issue_generic"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "51",
+            "name": "Start Progress",
+            "description": "",
+            "from": [
+              "10002"
+            ],
+            "to": "10051",
+            "type": "directed",
+            "rules": {
+              "conditions": [],
+              "validators": [],
+              "postFunctions": [
+                {
+                  "type": "UpdateIssueStatusFunction"
+                },
+                {
+                  "type": "CreateCommentFunction"
+                },
+                {
+                  "type": "GenerateChangeHistoryFunction"
+                },
+                {
+                  "type": "IssueReindexFunction"
+                },
+                {
+                  "type": "FireIssueEventFunction",
+                  "configuration": {
+                    "event": {
+                      "id": "13",
+                      "name": "issue_generic"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "61",
+            "name": "Create Merge Request",
+            "description": "",
+            "from": [
+              "10051"
+            ],
+            "to": "10032",
+            "type": "directed",
+            "rules": {
+              "conditions": [],
+              "validators": [],
+              "postFunctions": [
+                {
+                  "type": "UpdateIssueStatusFunction"
+                },
+                {
+                  "type": "CreateCommentFunction"
+                },
+                {
+                  "type": "GenerateChangeHistoryFunction"
+                },
+                {
+                  "type": "IssueReindexFunction"
+                },
+                {
+                  "type": "FireIssueEventFunction",
+                  "configuration": {
+                    "event": {
+                      "id": "13",
+                      "name": "issue_generic"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "71",
+            "name": "Testing",
+            "description": "",
+            "from": [
+              "10032"
+            ],
+            "to": "10057",
+            "type": "directed",
+            "rules": {
+              "conditions": [],
+              "validators": [],
+              "postFunctions": [
+                {
+                  "type": "UpdateIssueStatusFunction"
+                },
+                {
+                  "type": "CreateCommentFunction"
+                },
+                {
+                  "type": "GenerateChangeHistoryFunction"
+                },
+                {
+                  "type": "IssueReindexFunction"
+                },
+                {
+                  "type": "FireIssueEventFunction",
+                  "configuration": {
+                    "event": {
+                      "id": "13",
+                      "name": "issue_generic"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "81",
+            "name": "Done Sprint",
+            "description": "",
+            "from": [
+              "10057"
+            ],
+            "to": "10053",
+            "type": "directed",
+            "screen": {
+              "id": "10062"
+            },
+            "rules": {
+              "conditions": [],
+              "validators": [],
+              "postFunctions": [
+                {
+                  "type": "UpdateIssueFieldFunction",
+                  "configuration": {
+                    "fieldId": "resolution",
+                    "fieldValue": "10000"
+                  }
+                },
+                {
+                  "type": "UpdateIssueStatusFunction"
+                },
+                {
+                  "type": "CreateCommentFunction"
+                },
+                {
+                  "type": "GenerateChangeHistoryFunction"
+                },
+                {
+                  "type": "IssueReindexFunction"
+                },
+                {
+                  "type": "FireIssueEventFunction",
+                  "configuration": {
+                    "event": {
+                      "id": "13",
+                      "name": "issue_generic"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "91",
+            "name": "Ready For Production",
+            "description": "",
+            "from": [
+              "10052"
+            ],
+            "to": "10054",
+            "type": "directed",
+            "rules": {
+              "conditions": [],
+              "validators": [],
+              "postFunctions": [
+                {
+                  "type": "UpdateIssueStatusFunction"
+                },
+                {
+                  "type": "CreateCommentFunction"
+                },
+                {
+                  "type": "GenerateChangeHistoryFunction"
+                },
+                {
+                  "type": "IssueReindexFunction"
+                },
+                {
+                  "type": "FireIssueEventFunction",
+                  "configuration": {
+                    "event": {
+                      "id": "13",
+                      "name": "issue_generic"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "statuses": [
+          {
+            "id": "10002",
+            "name": "Ready to Dev",
+            "properties": {
+              "issueEditable": true
+            }
+          },
+          {
+            "id": "10007",
+            "name": "Blocked",
+            "properties": {
+              "issueEditable": true
+            }
+          },
+          {
+            "id": "10012",
+            "name": "Abandoned",
+            "properties": {
+              "issueEditable": true
+            }
+          },
+          {
+            "id": "10032",
+            "name": "Code Review",
+            "properties": {
+              "issueEditable": true
+            }
+          },
+          {
+            "id": "10047",
+            "name": "Draft",
+            "properties": {
+              "issueEditable": true
+            }
+          },
+          {
+            "id": "10048",
+            "name": "In Analysis",
+            "properties": {
+              "issueEditable": true
+            }
+          },
+          {
+            "id": "10049",
+            "name": "To Refine",
+            "properties": {
+              "issueEditable": true
+            }
+          },
+          {
+            "id": "10051",
+            "name": "Dev In Progress",
+            "properties": {
+              "issueEditable": true
+            }
+          },
+          {
+            "id": "10052",
+            "name": "PO Validation",
+            "properties": {
+              "issueEditable": true
+            }
+          },
+          {
+            "id": "10053",
+            "name": "Done Sprint",
+            "properties": {
+              "issueEditable": true
+            }
+          },
+          {
+            "id": "10054",
+            "name": "Ready For Production",
+            "properties": {
+              "issueEditable": true
+            }
+          },
+          {
+            "id": "10055",
+            "name": "Acceptance Tests",
+            "properties": {
+              "issueEditable": true
+            }
+          },
+          {
+            "id": "10057",
+            "name": "Testing",
+            "properties": {
+              "issueEditable": true
+            }
+          },
+          {
+            "id": "6",
+            "name": "Closed",
+            "properties": {
+              "issueEditable": true
+            }
+          }
+        ],
+        "isDefault": false
+      }
+    ]
+  }

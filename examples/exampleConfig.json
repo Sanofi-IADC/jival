@@ -1,0 +1,55 @@
+{
+    "expectedWorkflowName": "My test workflow",
+    "expectedTransitions": [
+      {
+        "name": "Create",
+        "from": [],
+        "to": "Draft",
+        "type": "initial",
+        "rules": {
+          "conditions": [],
+          "validators": [
+            {
+              "type": "PermissionValidator",
+              "configuration": {
+                "permissionKey": "CREATE_ISSUES"
+              }
+            }
+          ],
+          "postFunctions": [
+            {
+              "type": "IssueCreateFunction"
+            },
+            {
+              "type": "IssueReindexFunction"
+            },
+            {
+              "type": "FireIssueEventFunction",
+              "configuration": {
+                "event": {
+                  "id": "1",
+                  "name": "issue_created"
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Abandoned",
+        "from": [],
+        "to": "Abandoned",
+        "type": "initial"
+      }
+    ],
+    "expectedStatuses": [
+      {
+        "name": "Dev In Progress",
+        "transitionTo": ["Blocked" , "Code Review"],
+        "transitionFrom": ["Blocked" ,"Ready to Dev" , "Code Review"],
+        "properties": {
+          "issueEditable": true
+        }
+      }
+    ]
+  }
