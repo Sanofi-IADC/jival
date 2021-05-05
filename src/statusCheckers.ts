@@ -1,7 +1,6 @@
 import {
   JiraApiStatus,
-  JiraStatus,
-  JiraWorkflowTransition,
+  JiraStatus
 } from "./interfaces";
 import { TestExecution, TestResult } from "./testResults";
 import { checkEquality, getReadableStatuses } from "./helpers";
@@ -146,38 +145,3 @@ export function getTransitionFroms(status: JiraApiStatus, workflow: any): any {
 
   return allIds;
 }
-// export function checkTransitionConditions(
-//   expectedTransition: JiraWorkflowTransition,
-//   transition: any
-// ): TestExecution {
-//   const expectation = `Transition conditions match`;
-
-//   if (!expectedTransition.rules || !expectedTransition.rules.conditions)
-//     return TestExecution.buildTestExecution(
-//       expectation,
-//       TestResult.Skip,
-//       "Skip test, no expectation defined"
-//     );
-
-//   const transitionExists = checkTransitionExists(transition, expectation);
-//   if (transitionExists.result == TestResult.Fail) return transitionExists;
-
-//   if (!transition.rules || !transition.rules.conditions) {
-//     return TestExecution.buildTestExecution(
-//       expectation,
-//       TestResult.Fail,
-//       "Condition rules were undefined"
-//     );
-//   }
-//   const result = checkEquality(
-//     "Transition conditions match",
-//     expectedTransition.rules.conditions,
-//     transition.rules.conditions
-//   );
-
-//   return TestExecution.buildTestExecution(
-//     expectation,
-//     result.testOk ? TestResult.Pass : TestResult.Fail,
-//     result.resultDetail
-//   );
-// }

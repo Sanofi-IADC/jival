@@ -3,8 +3,6 @@ import fetch from 'node-fetch'
 import {QueryApiForWorkflow} from '../jiraApi'
 jest.mock('node-fetch', ()=>jest.fn())
 
-// const {Response} = jest.requireActual('node-fetch');
-
 test('QueryApiForWorkflow calls fetch with the right args and returns the user id', async () => {
   
   await QueryApiForWorkflow('big bananas', 'https://smudged-bananas.totallyfake.com', 'test.email@smudged-bananas.com', 'fakeTOKEN');
@@ -17,6 +15,4 @@ test('QueryApiForWorkflow calls fetch with the right args and returns the user i
       Authorization: "Basic dGVzdC5lbWFpbEBzbXVkZ2VkLWJhbmFuYXMuY29tOmZha2VUT0tFTg=="
        }}
   );
-
-  //TODO: mock response? expect(response).toBe(xxxxxx);
 });

@@ -66,7 +66,7 @@ test("checkEquality returns passing test when values match", async () => {
 
 test("getReadableStatuses from returns text form of IDs", async () => {
   const actualWorkflow = API_RESPONSE.values[0];
-  //   const actualTransition = actualWorkflow.transitions[0];
+
   const inputIds = [
     "10002",
     "10012",
