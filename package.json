@@ -1,6 +1,6 @@
 {
   "name": "@sanofi-iadc/jival",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Validation/health check tool for Jira workflows.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
