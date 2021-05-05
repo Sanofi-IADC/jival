@@ -28,8 +28,7 @@ Workflow: "My test workflow" should be correctly defined
 - You have several Jira instances and need to check that configurations are the same between them
 
 ## Checks
-1. Workflow exists
-
+### Workflow transitions
 For each defined transition expectation
 1. Transition exists (search by name)
 2. From status list is the same
@@ -37,14 +36,12 @@ For each defined transition expectation
 4. Rules: conditions match
 5. Rules: validators match
 
+#### Workflow statuses
 For each defined status expectation
 1. Status exists (search by name)
 2. Status settings are the same (excludes ID)
 3. Status only accepts transition from expected statuses
 4. Status can only transition to expected statuses
-
-- ID fields are never used in status expectations as these are internal IDs assigned by Jira, not specified by you
-- Instead names are used to check existance of workflows, statuses, etc. as these are unique within your Jira space
 
 ## Installation
 
